@@ -1,0 +1,23 @@
+i#!/bin/bash
+
+for i in cpux86.js cpux86-std.js cpux86-ta.js term.js utils.js jslinux.js index.html linuxstart.bin; do
+wget http://bellard.org/jslinux/$i
+done
+
+#download  now from here
+
+#  0toolsM.tgz           hda.bin     linux-3.0.3-jsPcEmulator.patch     vmlinux-3.0.3-jspcemul.bin
+#  config-3.0.3jspcemul  jslinux.patch                    
+# the patch and config are just for in case you want to do yourself ;patch jslinux.js jslinux.patch  to fit our need here
+
+tar xzf 0toolsM.tgz
+./0split_hda
+#This will create a lot of chunks_64K  diskfile for probably faster access
+#
+firefox index.html
+#
+# enjoy !
+#switching back from mipselOpenwrt to x86Linux : CTRL-D
+#From x86Linux  to mipselOpenwrt : cd /mipsel && chroot . /bin/sh
+#Try in both x86Linux/kamikaze : 
+# cat /etc/dev/clipboard   look at the "clipboard window" ;

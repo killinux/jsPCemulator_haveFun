@@ -1,0 +1,89 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>Make your own linux on jsPCemulator</title>
+<meta name="generator" content="Bluefish 2.0.2" >
+<meta name="author" content="wangji" >
+<meta name="date" content="2012-06-24T18:03:30+0200" >
+<meta name="copyright" content="">
+<meta name="keywords" content="">
+<meta name="description" content="">
+<meta name="ROBOTS" content="NOINDEX, NOFOLLOW">
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<meta http-equiv="content-type" content="application/xhtml+xml; charset=UTF-8">
+<meta http-equiv="content-style-type" content="text/css">
+<meta http-equiv="expires" content="0">
+</head>
+<body>
+                          <h3><div style="text-align: center"> What can you do to make fun of Fabrice Bellard jsPC emulator ?</div></h3><br clear="all" /><br clear="all" /><br clear="all" />
+                           
+                  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;              I very lately discover this playgame ; but even after a year , googling does not bring in "good attempts" ,apart complains about<br />
+                
+                       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   "not very useful" , "compiled kernel just brings in startLinux ..then black screen" ..etc....<br /><br />
+
+&nbsp;&nbsp;            except one thread on <a href="http://www.bttr-software.de/forum/forum_entry.php?id=11293">DOS Ain't dead started by Arjay</a> this 21/3/2012 about runcom included in jspcemulator : and this excites me !            
+</br ></br ></br ></br >
+
+  &nbsp;&nbsp;&nbsp;&nbsp;          Let's just enumerate a few tentatives
+            
+                      <ol>
+	<li>  linux-3.0.3 as kernel (this is just used in an earlier version of tinycore I am used to play with )</li>
+	<li>  Get Pi with almost 10000 digits in less than a minute ( that's of course is Fabrice hpigot ! (DOSCOM as binfmt_misc)</li>
+	<li>  Create a "drive not ready" in this virtual linux !!! with of course no hard drive around ! </li>
+	<li>  make it run kamikaze-openwrt mipsel as if we were in front of a ...Linksys router ! (without any networking of course )</li>
+</ol>    
+                          
+ <br />           
+                          
+                          
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;       Illustrations :<br /><br />
+           
+           hello_Local_jsPCemulator.png  &nbsp;&nbsp;&nbsp;&nbsp;          hpigot_pseudoKamikaze_jsPcEmulator.png &nbsp;&nbsp;&nbsp;&nbsp; linux-3.0.3_vfsRoothda_unknownBlock0,0.png
+<br />hpigot_pseudoKamikaze_jspcemulator.png &nbsp;&nbsp;&nbsp; kamikaze-7.09_on_jsPcEmulator.png   &nbsp;&nbsp;&nbsp;    tinycore_jsPcEmulator.png &nbsp;&nbsp;&nbsp; DriveNotReady_in_jsPcEmulator.png 
+              
+<br />
+
+              <br /><br /> Before detailing howto for obtaining the above screenshots  ,let's specify the sources availability .<br /><br />
+               
+            jsPcEmulator was annouced around may 2011 ;I can't find thru google .Demo was probably accessible thru Bellard.org<br /><br />
+            
+            On 4 march 2012 <a href="http://git.busybox.net/busybox-website/snapshot/busybox-website-317871f1a85816e3c0f405f00b2f081978fa9caa.tar.bz2">live_bbox src</a> was put on busybox-website 
+     This is a mere rootfs with busybox inside ,all mounted readonly ...so hard to do many things.<br /><br />
+     
+     But on Bellard site,a version of rootfs with gcc compiler included ,mounted readonly ,but with a /var on tmpfs allows already more fun.<br /><br />
+ <br />   
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    In all cases  the game consists of :<br /><br /><ol>
+	<li> jsInterpreter  comprising cpux86.js [cpux86-std.js cpux86-ta.js ]</li>
+	<li> Linuxstarter   linuxstart.bin  jslinux.js</li>
+	<li> utilities           term.js  utils.js</li>
+	<li> linux         uncompressed kernel vmlinux   and an ext2 diskfile containing the rootfs</li>
+</ol>
+               
+   <br />        
+               
+               
+
+&nbsp;&nbsp;  By default the virtual memory allocated was limited to 16M . This probably limits the use of very big kernel , or implement qemu to emulate other cpu
+  inside this virtual machine !!!!<br /><br /><br />
+  
+ &nbsp;&nbsp;&nbsp; On the site ,there is also a very small but useful 0tools.tag.gz to manipulate filedrive and the linuxstart-20120111.tar.gz where a patch for linux-2.6.20 was provided
+ <br /> The patch allows "more flow" to serial 8250 needed by the virtual terminal ,and also creates a clipboard device for communication between the virtual machine and
+  the browser (hence the pc host using many clic clic of the mouse !)
+  
+ <br /><br /><br /> 
+     So it's very easy to adapt the patch for linux-3.0.3 :&nbsp;&nbsp;&nbsp;  linux-3.0.3-jsPcEmulator.patch<br /><br />
+
+     Increase the allocated memory to 128M  in jslinux.js<br /><br />
+     
+     Build a rootfs with standard glibc as available in ubuntu -we know better- so we could put there all cosmetics for fun ; In particular take advantage of
+     builtin binfmt_misc to introduce there "mipsel"  operation under qemu-mipsel-static.<br /><br />
+     
+     Having fun with dummy file drive to make the emulator believes we had a bigger drive than what it really is ( I put in 0dummydrive to complement 0tools )
+     
+     <br /><br />
+  
+  
+
+</body>
+</html>
